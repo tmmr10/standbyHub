@@ -2,26 +2,39 @@ import SwiftUI
 
 struct CalendarSlotView: View {
     let theme: WidgetTheme
+    let data: DashboardData
 
     var body: some View {
-        VStack(spacing: 6) {
+        VStack(spacing: 3) {
             Image(systemName: "calendar")
-                .font(.system(size: 20))
+                .font(.system(size: 14))
                 .foregroundColor(theme.accent)
 
-            Text(dayString)
-                .font(.system(size: 24, weight: .bold, design: .rounded))
-                .foregroundColor(theme.textPrimary)
+            if let title = data.nextEventTitle {
+                Text(title)
+                    .font(.system(size: 10, weight: .medium))
+                    .foregroundColor(theme.accent)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.7)
 
-            Text(monthString)
-                .font(.system(size: 11, weight: .medium))
-                .foregroundColor(theme.textSecondary)
+                if let time = data.nextEventTime {
+                    Text(time)
+                        .font(.system(size: 14, weight: .bold, design: .rounded))
+                        .foregroundColor(theme.accent)
+                        .minimumScaleFactor(0.8)
+                }
+            } else {
+                Text(dayString)
+                    .font(.system(size: 18, weight: .bold, design: .rounded))
+                    .foregroundColor(theme.textPrimary)
+                    .minimumScaleFactor(0.7)
+
+                Text(monthString)
+                    .font(.system(size: 9, weight: .medium))
+                    .foregroundColor(theme.textSecondary)
+            }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(
-            RoundedRectangle(cornerRadius: 12)
-                .fill(OLEDColors.surfaceCard)
-        )
+        .padding(6)
     }
 
     private var dayString: String {
@@ -32,7 +45,7 @@ struct CalendarSlotView: View {
 
     private var monthString: String {
         let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "de_DE")
+        formatter.locale = Locale.current
         formatter.dateFormat = "MMM"
         return formatter.string(from: Date()).uppercased()
     }

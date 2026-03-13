@@ -23,6 +23,39 @@ class SettingsService {
     }
     return WidgetSettings.defaultSettings();
   }
+
+  Future<String?> saveBackgroundImage(String sourcePath, String widgetKey) async {
+    try {
+      final result = await _channel.invokeMethod<String>('saveBackgroundImage', {
+        'sourcePath': sourcePath,
+        'widgetKey': widgetKey,
+      });
+      return result;
+    } on PlatformException {
+      return null;
+    }
+  }
+
+  Future<String?> getBackgroundImagePath(String filename) async {
+    if (filename.isEmpty) return null;
+    try {
+      return await _channel.invokeMethod<String>('getBackgroundImagePath', {
+        'filename': filename,
+      });
+    } on PlatformException {
+      return null;
+    }
+  }
+
+  Future<void> removeBackgroundImage(String filename) async {
+    try {
+      await _channel.invokeMethod('removeBackgroundImage', {
+        'filename': filename,
+      });
+    } on PlatformException {
+      // ignore
+    }
+  }
 }
 
 final settingsServiceProvider = Provider<SettingsService>((ref) {

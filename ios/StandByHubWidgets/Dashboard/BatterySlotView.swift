@@ -2,25 +2,29 @@ import SwiftUI
 
 struct BatterySlotView: View {
     let theme: WidgetTheme
+    let data: DashboardData
+
+    private var levelText: String {
+        data.batteryLevel > 0 ? "\(data.batteryLevel)%" : "--%"
+    }
 
     var body: some View {
-        VStack(spacing: 6) {
-            Image(systemName: "battery.75percent")
-                .font(.system(size: 20))
+        VStack(spacing: 3) {
+            Image(systemName: data.batteryIcon)
+                .font(.system(size: 14))
+                .foregroundColor(batteryColor)
+
+            Text(levelText)
+                .font(.system(size: 18, weight: .bold, design: .rounded))
                 .foregroundColor(theme.accent)
-
-            Text("75%")
-                .font(.system(size: 24, weight: .bold, design: .rounded))
-                .foregroundColor(theme.textPrimary)
-
-            Text("BATTERIE")
-                .font(.system(size: 11, weight: .medium))
-                .foregroundColor(theme.textSecondary)
+                .minimumScaleFactor(0.7)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(
-            RoundedRectangle(cornerRadius: 12)
-                .fill(OLEDColors.surfaceCard)
-        )
+        .padding(6)
+    }
+
+    private var batteryColor: Color {
+        if data.batteryLevel <= 20 { return .red }
+        if data.batteryLevel <= 40 { return .orange }
+        return theme.accent
     }
 }

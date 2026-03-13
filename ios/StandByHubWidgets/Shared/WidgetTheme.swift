@@ -7,15 +7,43 @@ struct WidgetTheme {
     let textSecondary: Color
 
     static func from(settings: WidgetSettingsData) -> WidgetTheme {
+        from(settings: settings, date: Date())
+    }
+
+    static func from(settings: WidgetSettingsData, date: Date) -> WidgetTheme {
         let accent: Color
         if settings.timeOfDayReactivity {
-            accent = TimeOfDayColor.forCurrentHour()
+            let hour = Calendar.current.component(.hour, from: date)
+            accent = TimeOfDayColor.forHour(hour)
         } else {
             accent = OLEDColors.accent(from: settings.accentColorHex)
         }
         return WidgetTheme(
             accent: accent,
             background: OLEDColors.trueBlack,
+            textPrimary: OLEDColors.textPrimary,
+            textSecondary: OLEDColors.textSecondary
+        )
+    }
+
+    /// Theme with per-slot accent color + background override
+    static func from(settings: WidgetSettingsData, slotType: String) -> WidgetTheme {
+        from(settings: settings, slotType: slotType, date: Date())
+    }
+
+    static func from(settings: WidgetSettingsData, slotType: String, date: Date) -> WidgetTheme {
+        let accent: Color
+        if settings.timeOfDayReactivity {
+            let hour = Calendar.current.component(.hour, from: date)
+            accent = TimeOfDayColor.forHour(hour)
+        } else {
+            accent = OLEDColors.accent(from: settings.accentHex(for: slotType))
+        }
+        let bgHex = settings.backgroundHex(for: slotType)
+        let background = bgHex.isEmpty ? OLEDColors.trueBlack : OLEDColors.colorFromHex(bgHex)
+        return WidgetTheme(
+            accent: accent,
+            background: background,
             textPrimary: OLEDColors.textPrimary,
             textSecondary: OLEDColors.textSecondary
         )

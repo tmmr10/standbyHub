@@ -2,25 +2,23 @@ import SwiftUI
 
 struct WeatherSlotView: View {
     let theme: WidgetTheme
+    let data: DashboardData
+
+    private var tempText: String {
+        data.temperatureShort
+    }
 
     var body: some View {
-        VStack(spacing: 6) {
-            Image(systemName: "cloud.sun.fill")
-                .font(.system(size: 20))
+        VStack(spacing: 3) {
+            Image(systemName: data.weatherIcon)
+                .font(.system(size: 14))
+                .symbolRenderingMode(.multicolor)
+
+            Text(tempText)
+                .font(.system(size: 18, weight: .bold, design: .rounded))
                 .foregroundColor(theme.accent)
-
-            Text("--°")
-                .font(.system(size: 24, weight: .bold, design: .rounded))
-                .foregroundColor(theme.textPrimary)
-
-            Text("WETTER")
-                .font(.system(size: 11, weight: .medium))
-                .foregroundColor(theme.textSecondary)
+                .minimumScaleFactor(0.7)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(
-            RoundedRectangle(cornerRadius: 12)
-                .fill(OLEDColors.surfaceCard)
-        )
+        .padding(6)
     }
 }

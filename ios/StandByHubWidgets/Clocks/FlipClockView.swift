@@ -4,6 +4,8 @@ import WidgetKit
 struct FlipClockView: View {
     let entry: ClockEntry
 
+    @Environment(\.widgetFamily) var family
+
     private var hourString: String {
         let formatter = DateFormatter()
         formatter.dateFormat = entry.settings.use24HourFormat ? "HH" : "hh"
@@ -16,27 +18,35 @@ struct FlipClockView: View {
         return formatter.string(from: entry.date)
     }
 
+    private var isLarge: Bool { family == .systemLarge }
+    private var digitWidth: CGFloat { isLarge ? 60 : 40 }
+    private var digitHeight: CGFloat { isLarge ? 88 : 58 }
+    private var fontSize: CGFloat { isLarge ? 60 : 40 }
+    private var colonSize: CGFloat { isLarge ? 72 : 48 }
+
     var body: some View {
-        HStack(spacing: 4) {
-            FlipDigit(character: String(hourString.first ?? "0"), accent: entry.theme.accent)
-            FlipDigit(character: String(hourString.last ?? "0"), accent: entry.theme.accent)
+        HStack(spacing: isLarge ? 6 : 4) {
+            FlipDigit(character: String(hourString.first ?? "0"), accent: entry.theme.accent, width: digitWidth, height: digitHeight, fontSize: fontSize)
+            FlipDigit(character: String(hourString.last ?? "0"), accent: entry.theme.accent, width: digitWidth, height: digitHeight, fontSize: fontSize)
 
             Text(":")
-                .font(.system(size: 48, weight: .light))
+                .font(.system(size: colonSize, weight: .light))
                 .foregroundColor(entry.theme.accent)
                 .padding(.horizontal, 4)
 
-            FlipDigit(character: String(minuteString.first ?? "0"), accent: entry.theme.accent)
-            FlipDigit(character: String(minuteString.last ?? "0"), accent: entry.theme.accent)
+            FlipDigit(character: String(minuteString.first ?? "0"), accent: entry.theme.accent, width: digitWidth, height: digitHeight, fontSize: fontSize)
+            FlipDigit(character: String(minuteString.last ?? "0"), accent: entry.theme.accent, width: digitWidth, height: digitHeight, fontSize: fontSize)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(OLEDColors.trueBlack)
     }
 }
 
 struct FlipDigit: View {
     let character: String
     let accent: Color
+    var width: CGFloat = 40
+    var height: CGFloat = 58
+    var fontSize: CGFloat = 40
 
     var body: some View {
         ZStack {
@@ -47,15 +57,14 @@ struct FlipDigit: View {
                         .stroke(Color.white.opacity(0.1), lineWidth: 1)
                 )
 
-            // Split line
             Rectangle()
                 .fill(OLEDColors.trueBlack)
                 .frame(height: 1.5)
 
             Text(character)
-                .font(.system(size: 40, weight: .bold, design: .rounded))
+                .font(.system(size: fontSize, weight: .bold, design: .rounded))
                 .foregroundColor(accent)
         }
-        .frame(width: 40, height: 58)
+        .frame(width: width, height: height)
     }
 }

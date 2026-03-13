@@ -43,7 +43,6 @@ dirs = {
     MinimalDigitalView.swift
     FlipClockView.swift
     AnalogClassicView.swift
-    GradientClockView.swift
     BinaryClockView.swift
   ],
   'Ambient' => %w[

@@ -4,6 +4,8 @@ import WidgetKit
 struct BinaryClockView: View {
     let entry: ClockEntry
 
+    @Environment(\.widgetFamily) var family
+
     private var digits: [Int] {
         let calendar = Calendar.current
         let h = calendar.component(.hour, from: entry.date)
@@ -11,33 +13,35 @@ struct BinaryClockView: View {
         return [h / 10, h % 10, m / 10, m % 10]
     }
 
+    private var dotSize: CGFloat { family == .systemLarge ? 20 : 14 }
+
     var body: some View {
-        HStack(spacing: 6) {
-            BinaryColumn(value: digits[0], accent: entry.theme.accent)
-            BinaryColumn(value: digits[1], accent: entry.theme.accent)
+        HStack(spacing: family == .systemLarge ? 10 : 6) {
+            BinaryColumn(value: digits[0], accent: entry.theme.accent, dotSize: dotSize)
+            BinaryColumn(value: digits[1], accent: entry.theme.accent, dotSize: dotSize)
 
             Rectangle()
                 .fill(Color.clear)
-                .frame(width: 10)
+                .frame(width: family == .systemLarge ? 16 : 10)
 
-            BinaryColumn(value: digits[2], accent: entry.theme.accent)
-            BinaryColumn(value: digits[3], accent: entry.theme.accent)
+            BinaryColumn(value: digits[2], accent: entry.theme.accent, dotSize: dotSize)
+            BinaryColumn(value: digits[3], accent: entry.theme.accent, dotSize: dotSize)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(OLEDColors.trueBlack)
     }
 }
 
 struct BinaryColumn: View {
     let value: Int
     let accent: Color
+    var dotSize: CGFloat = 14
 
     var body: some View {
         VStack(spacing: 4) {
             ForEach((0..<4).reversed(), id: \.self) { bit in
                 Circle()
                     .fill((value >> bit) & 1 == 1 ? accent : accent.opacity(0.15))
-                    .frame(width: 14, height: 14)
+                    .frame(width: dotSize, height: dotSize)
             }
         }
     }

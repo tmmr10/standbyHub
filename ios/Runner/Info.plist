@@ -41,6 +41,12 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>StandBy Hub nutzt deinen Standort für aktuelle Wetterdaten im Dashboard-Widget.</string>
+	<key>NSCalendarsFullAccessUsageDescription</key>
+	<string>StandBy Hub zeigt deinen nächsten Termin im Dashboard-Widget an.</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>StandBy Hub zeigt deinen nächsten Termin im Dashboard-Widget an.</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
