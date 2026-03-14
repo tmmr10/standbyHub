@@ -905,7 +905,7 @@ abstract class AppLocalizations {
   /// No description provided for @paywallBuyButton.
   ///
   /// In de, this message translates to:
-  /// **'9,99 € — Einmalig freischalten'**
+  /// **'2,99 € — Einmalig freischalten'**
   String get paywallBuyButton;
 
   /// No description provided for @paywallRestore.

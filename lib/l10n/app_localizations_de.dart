@@ -429,7 +429,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get paywallProActive => 'Pro ist aktiv';
 
   @override
-  String get paywallBuyButton => '9,99 € — Einmalig freischalten';
+  String get paywallBuyButton => '2,99 € — Einmalig freischalten';
 
   @override
   String get paywallRestore => 'Käufe wiederherstellen';

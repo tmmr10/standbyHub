@@ -425,7 +425,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get paywallProActive => 'Pro is active';
 
   @override
-  String get paywallBuyButton => '\$9.99 — Unlock once';
+  String get paywallBuyButton => '\$2.99 — Unlock once';
 
   @override
   String get paywallRestore => 'Restore Purchases';
